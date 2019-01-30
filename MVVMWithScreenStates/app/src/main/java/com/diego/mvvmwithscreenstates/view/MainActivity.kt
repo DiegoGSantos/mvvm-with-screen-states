@@ -5,39 +5,36 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diego.mvvmwithscreenstates.R
+import com.diego.mvvmwithscreenstates.model.Forecast
 import com.diego.mvvmwithscreenstates.model.Task
+import com.diego.mvvmwithscreenstates.view_model.ForecastViewModel
 import com.diego.mvvmwithscreenstates.view_model.TasksViewModel
+import com.diego.mvvmwithscreenstates.view_state.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var tasksAdapter: CustomAdapter
-    private val viewModel = TasksViewModel()
+    private val viewModel = ForecastViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setRecyclerView()
-
         setObserver()
 
-        viewModel.loadTasks()
+        viewModel.getForecast("Campinas")
     }
 
     private fun setObserver() {
-        viewModel.tasksLiveData.observe(this, Observer<List<Task>> { tasks ->
-            tasks?.let {
-                tasksAdapter.setList(it)
+        viewModel.forecastLiveData.observe(this, Observer<ForecastScreenState> { forecastScreenState ->
+            forecastScreenState?.let {
+                llForecastContainer.setViewState(forecastScreenState.llForecastContainerState)
+                ivForecastWeatherIcon.setViewState(forecastScreenState.ivForecastWeatherIconState)
+                tvForecastCityName.setTextViewState(forecastScreenState.tvForecastCityNameState)
+                tvForecastDescription.setTextViewState(forecastScreenState.tvForecastDescriptionState)
+                tvForecastTemperature.setTextViewState(forecastScreenState.tvForecastTemperatureState)
+                tvForecastErrorMessage.setViewState(forecastScreenState.tvForecastErrorMessageState)
+                pbForecastLoading.setViewState(forecastScreenState.pbForecastLoadingState)
             }
         })
-    }
-
-    private fun setRecyclerView() {
-        tasksList.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            tasksAdapter = CustomAdapter()
-            adapter = tasksAdapter
-        }
     }
 }
