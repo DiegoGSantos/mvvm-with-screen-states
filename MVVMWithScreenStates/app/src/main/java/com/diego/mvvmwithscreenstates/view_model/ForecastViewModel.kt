@@ -4,9 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diego.mvvmwithscreenstates.R
 import com.diego.mvvmwithscreenstates.model.Forecast
-import com.diego.mvvmwithscreenstates.rest_client.Result
-import com.diego.mvvmwithscreenstates.rest_client.Service
-import com.diego.mvvmwithscreenstates.rest_client.awaitResponse
+import com.diego.mvvmwithscreenstates.rest_client.*
 import com.diego.mvvmwithscreenstates.view.ForecastScreenState
 import com.diego.mvvmwithscreenstates.view_state.TextViewState
 import com.diego.mvvmwithscreenstates.view_state.ViewState
@@ -20,20 +18,18 @@ class ForecastViewModel: ViewModel() {
     val forecastLiveData: MutableLiveData<ForecastScreenState> = MutableLiveData()
 
     fun getForecast(city: String) {
-        GlobalScope.launch(Dispatchers.Main) {
-            Service.create().getForecast(city).awaitResponse(::onRequestSuccess, ::onError)
-        }
-
 //        GlobalScope.launch(Dispatchers.Main) {
-//            val result = Service.create().getForecast(city).awaitResponse()
-//
-//            onResponse(result as Result<Forecast>)
+//            Service.create().getForecast(city).awaitResponse(::onRequestSuccess, ::onError)
 //        }
-    }
 
-    fun onResponse(result: Result<Forecast>) = when (result) {
-        is Result.Success -> {}
-        is Result.Error -> {}
+        GlobalScope.launch(Dispatchers.Main) {
+            val result = Service.create().getForecast(city).awaitResult()
+
+            when (result) {
+                is Result.Success -> onRequestSuccess(result.data)
+                is Result.Error -> onError(result.throwable)
+            }
+        }
     }
 
     private fun onError(throwable: Throwable) {
