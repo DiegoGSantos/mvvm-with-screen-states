@@ -21,7 +21,9 @@ class MainActivity : AppCompatActivity() {
 
         setObserver()
 
-        viewModel.getForecast("Campinas")
+        btSearchCity.setOnClickListener {
+            viewModel.getForecast(etSearchCity.text.toString())
+        }
     }
 
     private fun setObserver() {
@@ -32,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 tvForecastCityName.setTextViewState(forecastScreenState.tvForecastCityNameState)
                 tvForecastDescription.setTextViewState(forecastScreenState.tvForecastDescriptionState)
                 tvForecastTemperature.setTextViewState(forecastScreenState.tvForecastTemperatureState)
-                tvForecastErrorMessage.setViewState(forecastScreenState.tvForecastErrorMessageState)
+                tvForecastErrorMessage.setTextViewState(forecastScreenState.tvForecastErrorMessageState)
                 pbForecastLoading.setViewState(forecastScreenState.pbForecastLoadingState)
             }
         })

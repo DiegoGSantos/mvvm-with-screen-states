@@ -33,7 +33,15 @@ class ForecastViewModel: ViewModel() {
     }
 
     private fun onError(throwable: Throwable) {
-
+        forecastLiveData.value = ForecastScreenState(
+            ViewState(),
+            ViewState(ViewVisibility.GONE),
+            TextViewState(ViewVisibility.GONE),
+            TextViewState(ViewVisibility.GONE),
+            TextViewState(ViewVisibility.GONE),
+            TextViewState(text = "Erro ao carregar cidade"),
+            ViewState(ViewVisibility.GONE)
+        )
     }
 
     private fun onRequestSuccess(response: Response<Forecast>) {
