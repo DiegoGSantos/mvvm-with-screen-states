@@ -3,13 +3,11 @@ package com.diego.mvvmwithscreenstates.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.diego.mvvmwithscreenstates.R
-import com.diego.mvvmwithscreenstates.model.Forecast
-import com.diego.mvvmwithscreenstates.model.Task
+import com.diego.mvvmwithscreenstates.extension.hideKeyboard
 import com.diego.mvvmwithscreenstates.view_model.ForecastViewModel
-import com.diego.mvvmwithscreenstates.view_model.TasksViewModel
-import com.diego.mvvmwithscreenstates.view_state.*
+import com.diego.mvvmwithscreenstates.view_state.setTextViewState
+import com.diego.mvvmwithscreenstates.view_state.setViewState
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         btSearchCity.setOnClickListener {
             viewModel.getForecast(etSearchCity.text.toString())
+            hideKeyboard()
         }
     }
 

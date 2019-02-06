@@ -23,6 +23,7 @@ class ForecastViewModel: ViewModel() {
 //        }
 
         GlobalScope.launch(Dispatchers.Main) {
+            onLoading()
             val result = Service.create().getForecast(city).awaitResult()
 
             when (result) {
@@ -32,15 +33,27 @@ class ForecastViewModel: ViewModel() {
         }
     }
 
+    private fun onLoading() {
+        forecastLiveData.value = ForecastScreenState(
+            llForecastContainerState = ViewState(background = getBackgroundColor("")),
+            ivForecastWeatherIconState = ViewState(ViewVisibility.GONE),
+            tvForecastCityNameState = TextViewState(ViewVisibility.GONE),
+            tvForecastDescriptionState = TextViewState(ViewVisibility.GONE),
+            tvForecastTemperatureState = TextViewState(ViewVisibility.GONE),
+            tvForecastErrorMessageState = TextViewState(ViewVisibility.GONE),
+            pbForecastLoadingState = ViewState(ViewVisibility.VISIBLE)
+        )
+    }
+
     private fun onError(throwable: Throwable) {
         forecastLiveData.value = ForecastScreenState(
-            ViewState(),
-            ViewState(ViewVisibility.GONE),
-            TextViewState(ViewVisibility.GONE),
-            TextViewState(ViewVisibility.GONE),
-            TextViewState(ViewVisibility.GONE),
-            TextViewState(text = "Erro ao carregar cidade"),
-            ViewState(ViewVisibility.GONE)
+            llForecastContainerState = ViewState(background = getBackgroundColor("")),
+            ivForecastWeatherIconState = ViewState(ViewVisibility.GONE),
+            tvForecastCityNameState = TextViewState(ViewVisibility.GONE),
+            tvForecastDescriptionState = TextViewState(ViewVisibility.GONE),
+            tvForecastTemperatureState = TextViewState(ViewVisibility.GONE),
+            tvForecastErrorMessageState = TextViewState(text = "Erro ao carregar cidade"),
+            pbForecastLoadingState = ViewState(ViewVisibility.GONE)
         )
     }
 
@@ -49,13 +62,13 @@ class ForecastViewModel: ViewModel() {
 
         forecast?.let {
             forecastLiveData.value = ForecastScreenState(
-                ViewState(background = getBackgroundColor(forecast.periodOfTheDay)),
-                ViewState(background = getWeatherIcon(forecast.weather)),
-                TextViewState(text = forecast.cityName),
-                TextViewState(text = forecast.forecastDesc),
-                TextViewState(text = forecast.temperature),
-                TextViewState(ViewVisibility.GONE),
-                ViewState(ViewVisibility.GONE)
+                llForecastContainerState = ViewState(background = getBackgroundColor(forecast.periodOfTheDay)),
+                ivForecastWeatherIconState = ViewState(background = getWeatherIcon(forecast.weather)),
+                tvForecastCityNameState = TextViewState(text = forecast.cityName),
+                tvForecastDescriptionState = TextViewState(text = forecast.forecastDesc),
+                tvForecastTemperatureState = TextViewState(text = forecast.temperature),
+                tvForecastErrorMessageState = TextViewState(ViewVisibility.GONE),
+                pbForecastLoadingState = ViewState(ViewVisibility.GONE)
             )
         }
     }
@@ -63,6 +76,7 @@ class ForecastViewModel: ViewModel() {
     private fun getWeatherIcon(weather: String): Int {
         return when(weather) {
             "sunny" -> R.drawable.ic_sunny
+            "raining" -> R.drawable.ic_rain
             else -> R.drawable.ic_moon
         }
     }
@@ -70,6 +84,7 @@ class ForecastViewModel: ViewModel() {
     private fun getBackgroundColor(periodOfTheDay: String): Int {
         return when(periodOfTheDay) {
             "morning" -> R.color.clear_day_bg
+            "night" -> R.color.clear_night_bg
             else -> R.color.white
         }
     }

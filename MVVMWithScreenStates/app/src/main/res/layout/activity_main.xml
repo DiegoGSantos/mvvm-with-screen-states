@@ -42,6 +42,7 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintTop_toBottomOf="@id/etSearchCity"
+		android:layout_marginTop="50dp"
 		android:layout_marginBottom="16dp"/>
 
 	<TextView
@@ -86,7 +87,8 @@
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"/>
+		app:layout_constraintEnd_toEndOf="parent"
+		android:visibility="gone"/>
 
 	<TextView
 		android:id="@+id/tvForecastErrorMessage"
@@ -98,6 +100,7 @@
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		tools:text="Erro ao carregar cidade"/>
+		tools:text="Erro ao carregar cidade"
+		android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>
