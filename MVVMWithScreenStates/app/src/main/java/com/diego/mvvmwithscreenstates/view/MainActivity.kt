@@ -9,6 +9,9 @@ import com.diego.mvvmwithscreenstates.view_model.ForecastViewModel
 import com.diego.mvvmwithscreenstates.view_state.setTextViewState
 import com.diego.mvvmwithscreenstates.view_state.setViewState
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel = ForecastViewModel()
@@ -20,7 +23,9 @@ class MainActivity : AppCompatActivity() {
         setObserver()
 
         btSearchCity.setOnClickListener {
-            viewModel.getForecast(etSearchCity.text.toString())
+            GlobalScope.launch(Dispatchers.Main) {
+                viewModel.getForecast(etSearchCity.text.toString())
+            }
             hideKeyboard()
         }
     }

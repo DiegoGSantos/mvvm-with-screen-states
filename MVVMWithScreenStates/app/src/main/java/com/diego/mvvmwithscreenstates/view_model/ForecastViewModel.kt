@@ -17,19 +17,16 @@ import retrofit2.Response
 class ForecastViewModel: ViewModel() {
     val forecastLiveData: MutableLiveData<ForecastScreenState> = MutableLiveData()
 
-    fun getForecast(city: String) {
-//        GlobalScope.launch(Dispatchers.Main) {
-//            Service.create().getForecast(city).awaitResponse(::onRequestSuccess, ::onError)
-//        }
+    suspend fun getForecast(city: String) {
 
-        GlobalScope.launch(Dispatchers.Main) {
-            onLoading()
-            val result = Service.create().getForecast(city).awaitResult()
+//        Service.create().getForecast(city).awaitResponse(::onRequestSuccess, ::onError)
 
-            when (result) {
-                is Result.Success -> onRequestSuccess(result.data)
-                is Result.Error -> onError(result.throwable)
-            }
+        onLoading()
+        val result = Service.create().getForecast(city).awaitResult()
+
+        when (result) {
+            is Result.Success -> onRequestSuccess(result.data)
+            is Result.Error -> onError(result.throwable)
         }
     }
 

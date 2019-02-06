@@ -27,7 +27,7 @@ interface Service {
             val retrofit = retrofit2.Retrofit.Builder()
                     .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create())
                     .client(httpClient.build())
-                    .baseUrl("http://10.0.2.2:3000/")
+                    .baseUrl(Constants.BASE_URL)
                     .build()
 
             return retrofit.create(Service::class.java);
