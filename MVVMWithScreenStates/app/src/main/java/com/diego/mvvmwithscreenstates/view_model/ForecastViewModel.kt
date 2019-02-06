@@ -6,12 +6,7 @@ import com.diego.mvvmwithscreenstates.R
 import com.diego.mvvmwithscreenstates.model.Forecast
 import com.diego.mvvmwithscreenstates.rest_client.*
 import com.diego.mvvmwithscreenstates.view.ForecastScreenState
-import com.diego.mvvmwithscreenstates.view_state.TextViewState
-import com.diego.mvvmwithscreenstates.view_state.ViewState
-import com.diego.mvvmwithscreenstates.view_state.ViewVisibility
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.diego.mvvmwithscreenstates.view_state.*
 import retrofit2.Response
 
 class ForecastViewModel: ViewModel() {
@@ -31,43 +26,53 @@ class ForecastViewModel: ViewModel() {
     }
 
     private fun onLoading() {
-        forecastLiveData.value = ForecastScreenState(
-            llForecastContainerState = ViewState(background = getBackgroundColor("")),
-            ivForecastWeatherIconState = ViewState(ViewVisibility.GONE),
-            tvForecastCityNameState = TextViewState(ViewVisibility.GONE),
-            tvForecastDescriptionState = TextViewState(ViewVisibility.GONE),
-            tvForecastTemperatureState = TextViewState(ViewVisibility.GONE),
-            tvForecastErrorMessageState = TextViewState(ViewVisibility.GONE),
-            pbForecastLoadingState = ViewState(ViewVisibility.VISIBLE)
-        )
+        val forecastScreenState = ForecastScreenState().apply {
+            container.hasBackground(getBackgroundColor(""))
+            weatherIcon.isNotPresent()
+            cityName.isNotPresent()
+            description.isNotPresent()
+            temperature.isNotPresent()
+            errorMessage.isNotPresent()
+            loading.isVisible()
+        }
+
+        updateState(forecastScreenState)
     }
 
     private fun onError(throwable: Throwable) {
-        forecastLiveData.value = ForecastScreenState(
-            llForecastContainerState = ViewState(background = getBackgroundColor("")),
-            ivForecastWeatherIconState = ViewState(ViewVisibility.GONE),
-            tvForecastCityNameState = TextViewState(ViewVisibility.GONE),
-            tvForecastDescriptionState = TextViewState(ViewVisibility.GONE),
-            tvForecastTemperatureState = TextViewState(ViewVisibility.GONE),
-            tvForecastErrorMessageState = TextViewState(text = "Erro ao carregar cidade"),
-            pbForecastLoadingState = ViewState(ViewVisibility.GONE)
-        )
+        val forecastScreenState = ForecastScreenState().apply {
+            container.hasBackground(getBackgroundColor(""))
+            weatherIcon.isNotPresent()
+            cityName.isNotPresent()
+            description.isNotPresent()
+            temperature.isNotPresent()
+            errorMessage.hasText("Erro ao carregar cidade").isVisible()
+            loading.isNotPresent()
+        }
+
+        updateState(forecastScreenState)
     }
 
     private fun onRequestSuccess(response: Response<Forecast>) {
         val forecast = response.body()
 
         forecast?.let {
-            forecastLiveData.value = ForecastScreenState(
-                llForecastContainerState = ViewState(background = getBackgroundColor(forecast.periodOfTheDay)),
-                ivForecastWeatherIconState = ViewState(background = getWeatherIcon(forecast.weather)),
-                tvForecastCityNameState = TextViewState(text = forecast.cityName),
-                tvForecastDescriptionState = TextViewState(text = forecast.forecastDesc),
-                tvForecastTemperatureState = TextViewState(text = forecast.temperature),
-                tvForecastErrorMessageState = TextViewState(ViewVisibility.GONE),
-                pbForecastLoadingState = ViewState(ViewVisibility.GONE)
-            )
+            val forecastScreenState = ForecastScreenState().apply {
+                container.hasBackground(getBackgroundColor(forecast.periodOfTheDay))
+                weatherIcon.hasBackground(getWeatherIcon(forecast.weather))
+                cityName.hasText(forecast.cityName)
+                description.hasText(forecast.forecastDesc)
+                temperature.hasText(forecast.temperature)
+                errorMessage.isNotPresent()
+                loading.isNotPresent()
+            }
+
+            updateState(forecastScreenState)
         }
+    }
+
+    private fun updateState(forecastScreenState: ForecastScreenState) {
+        forecastLiveData.postValue(forecastScreenState)
     }
 
     private fun getWeatherIcon(weather: String): Int {

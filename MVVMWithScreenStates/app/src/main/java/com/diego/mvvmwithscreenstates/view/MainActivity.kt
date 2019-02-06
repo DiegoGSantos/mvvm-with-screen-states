@@ -33,13 +33,13 @@ class MainActivity : AppCompatActivity() {
     private fun setObserver() {
         viewModel.forecastLiveData.observe(this, Observer<ForecastScreenState> { forecastScreenState ->
             forecastScreenState?.let {
-                llForecastContainer.setViewState(forecastScreenState.llForecastContainerState)
-                ivForecastWeatherIcon.setViewState(forecastScreenState.ivForecastWeatherIconState)
-                tvForecastCityName.setTextViewState(forecastScreenState.tvForecastCityNameState)
-                tvForecastDescription.setTextViewState(forecastScreenState.tvForecastDescriptionState)
-                tvForecastTemperature.setTextViewState(forecastScreenState.tvForecastTemperatureState)
-                tvForecastErrorMessage.setTextViewState(forecastScreenState.tvForecastErrorMessageState)
-                pbForecastLoading.setViewState(forecastScreenState.pbForecastLoadingState)
+                llForecastContainer.setViewState(forecastScreenState.container)
+                ivForecastWeatherIcon.setViewState(forecastScreenState.weatherIcon)
+                tvForecastCityName.setTextViewState(forecastScreenState.cityName)
+                tvForecastDescription.setTextViewState(forecastScreenState.description)
+                tvForecastTemperature.setTextViewState(forecastScreenState.temperature)
+                tvForecastErrorMessage.setTextViewState(forecastScreenState.errorMessage)
+                pbForecastLoading.setViewState(forecastScreenState.loading)
             }
         })
     }
