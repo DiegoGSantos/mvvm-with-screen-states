@@ -1,6 +1,7 @@
 package com.diego.mvvmwithscreenstates
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.diego.mvvmwithscreenstates.JsonUtils.Companion.getJson
 import com.diego.mvvmwithscreenstates.rest_client.Constants
 import com.diego.mvvmwithscreenstates.view.ForecastScreenState
 import com.diego.mvvmwithscreenstates.view_model.ForecastViewModel
@@ -130,12 +131,5 @@ class ForecastViewModelUnitTest {
             assertTrue(errorMessage.matchesTextViewState(expectedState.errorMessage))
             assertTrue(loading.matchesViewState(expectedState.loading))
         }
-    }
-
-    private fun getJson(path : String) : String {
-        // Load the JSON response
-        val uri = this.javaClass.classLoader.getResource(path)
-        val file = File(uri.path)
-        return String(file.readBytes())
     }
 }
