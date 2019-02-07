@@ -27,13 +27,13 @@ class ForecastViewModel: ViewModel() {
 
     private fun onLoading() {
         val forecastScreenState = ForecastScreenState().apply {
-            container.hasBackground(getBackgroundColor(""))
-            weatherIcon.isNotPresent()
-            cityName.isNotPresent()
-            description.isNotPresent()
-            temperature.isNotPresent()
-            errorMessage.isNotPresent()
-            loading.isVisible()
+            container.withBackground(getBackgroundColor(""))
+            weatherIcon.remove()
+            cityName.remove()
+            description.remove()
+            temperature.remove()
+            errorMessage.remove()
+            loading.show()
         }
 
         updateState(forecastScreenState)
@@ -41,13 +41,13 @@ class ForecastViewModel: ViewModel() {
 
     private fun onError(throwable: Throwable) {
         val forecastScreenState = ForecastScreenState().apply {
-            container.hasBackground(getBackgroundColor(""))
-            weatherIcon.isNotPresent()
-            cityName.isNotPresent()
-            description.isNotPresent()
-            temperature.isNotPresent()
-            errorMessage.hasText("Erro ao carregar cidade").isVisible()
-            loading.isNotPresent()
+            container.withBackground(getBackgroundColor(""))
+            weatherIcon.remove()
+            cityName.remove()
+            description.remove()
+            temperature.remove()
+            errorMessage.hasText("Erro ao carregar cidade").show()
+            loading.remove()
         }
 
         updateState(forecastScreenState)
@@ -58,13 +58,13 @@ class ForecastViewModel: ViewModel() {
 
         forecast?.let {
             val forecastScreenState = ForecastScreenState().apply {
-                container.hasBackground(getBackgroundColor(forecast.periodOfTheDay))
-                weatherIcon.hasBackground(getWeatherIcon(forecast.weather))
+                container.withBackground(getBackgroundColor(forecast.periodOfTheDay))
+                weatherIcon.withBackground(getWeatherIcon(forecast.weather))
                 cityName.hasText(forecast.cityName)
                 description.hasText(forecast.forecastDesc)
                 temperature.hasText(forecast.temperature)
-                errorMessage.isNotPresent()
-                loading.isNotPresent()
+                errorMessage.remove()
+                loading.remove()
             }
 
             updateState(forecastScreenState)

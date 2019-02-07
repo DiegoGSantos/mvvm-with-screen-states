@@ -6,22 +6,22 @@ fun ViewState.matchesViewState(expectedViewState: ViewState): Boolean {
     return  visibility == expectedViewState.visibility && background == expectedViewState.background
 }
 
-fun ViewState.isVisible(): ViewState {
+fun ViewState.show(): ViewState {
     this.visibility = ViewVisibility.VISIBLE
     return this
 }
 
-fun ViewState.isInVisible(): ViewState {
+fun ViewState.hide(): ViewState {
     this.visibility = ViewVisibility.INVISIBLE
     return this
 }
 
-fun ViewState.isNotPresent(): ViewState {
+fun ViewState.remove(): ViewState {
     this.visibility = ViewVisibility.GONE
     return this
 }
 
-fun ViewState.hasBackground(backgroundColor: Int): ViewState {
+fun ViewState.withBackground(backgroundColor: Int): ViewState {
     this.background = backgroundColor
     return this
 }

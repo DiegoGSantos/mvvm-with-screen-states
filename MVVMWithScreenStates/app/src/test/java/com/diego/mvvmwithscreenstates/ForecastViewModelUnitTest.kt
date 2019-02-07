@@ -16,7 +16,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.MockitoAnnotations
-import java.io.File
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -33,33 +32,33 @@ class ForecastViewModelUnitTest {
     val rule = InstantTaskExecutorRule()
 
     private val successState = ForecastScreenState().apply {
-        container.hasBackground(R.color.clear_day_bg)
-        weatherIcon.hasBackground(R.drawable.ic_sunny)
+        container.withBackground(R.color.clear_day_bg)
+        weatherIcon.withBackground(R.drawable.ic_sunny)
         cityName.hasText("Campinas")
         description.hasText("Predominantemente ensolarado")
         temperature.hasText("28° C")
-        errorMessage.isNotPresent()
-        loading.isNotPresent()
+        errorMessage.remove()
+        loading.remove()
     }
 
     private val loadingState = ForecastScreenState().apply {
-        container.hasBackground(R.color.white)
-        weatherIcon.isNotPresent()
-        cityName.isNotPresent()
-        description.isNotPresent()
-        temperature.isNotPresent()
-        errorMessage.isNotPresent()
-        loading.isVisible()
+        container.withBackground(R.color.white)
+        weatherIcon.remove()
+        cityName.remove()
+        description.remove()
+        temperature.remove()
+        errorMessage.remove()
+        loading.show()
     }
 
     private val errorState = ForecastScreenState().apply {
-        container.hasBackground(R.color.white)
-        weatherIcon.isNotPresent()
-        cityName.isNotPresent()
-        description.isNotPresent()
-        temperature.isNotPresent()
-        errorMessage.hasText("Erro ao carregar cidade").isVisible()
-        loading.isNotPresent()
+        container.withBackground(R.color.white)
+        weatherIcon.remove()
+        cityName.remove()
+        description.remove()
+        temperature.remove()
+        errorMessage.hasText("Erro ao carregar cidade").show()
+        loading.remove()
     }
 
     @Before
