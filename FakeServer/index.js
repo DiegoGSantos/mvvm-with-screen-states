@@ -6,15 +6,15 @@ const Todo = require('./models/todo');
 app.use(express.json()) 
 
 var campinas = {"id": 1, "city_name": "Campinas", "forecast_desc": "Predominantemente ensolarado", "weather": "sunny", "temperature": "28° C", "period_of_the_day": "morning"};
-var japao = {"id": 2, "city_name": "Japão", "forecast_desc": "Trovoadas", "weather": "raining", "temperature": "8° C", "period_of_the_day": "night"};
+var toquio = {"id": 2, "city_name": "Tóquio", "forecast_desc": "Trovoadas", "weather": "raining", "temperature": "8° C", "period_of_the_day": "night"};
 app.get('/forecast', function(request, response) {
 
   delay(1500);
 
   if(request.query.city.toLowerCase() == "campinas") {
     response.status(200).send(campinas)
-  } else if(request.query.city.toLowerCase() == "japao") {
-    response.status(200).send(japao)
+  } else if(request.query.city.toLowerCase() == "toquio") {
+    response.status(200).send(toquio)
   } else {
     response.status(404).send("City not found")
   }
