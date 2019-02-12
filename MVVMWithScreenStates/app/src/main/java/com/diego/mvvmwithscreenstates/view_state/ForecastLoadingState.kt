@@ -11,4 +11,5 @@ class ForecastLoadingState(
     temperature: TextViewState = TextViewState().remove() as TextViewState,
     errorMessage: TextViewState = TextViewState().remove() as TextViewState,
     loading: ViewState = ViewState().show()
+
 ) : ForecastScreenState(container, weatherIcon, cityName,description, temperature, errorMessage, loading)
