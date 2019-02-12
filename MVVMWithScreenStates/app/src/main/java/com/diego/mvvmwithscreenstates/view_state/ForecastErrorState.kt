@@ -10,6 +10,6 @@ class ForecastErrorState(
     cityName: TextViewState = TextViewState().remove() as TextViewState,
     description: TextViewState = TextViewState().remove() as TextViewState,
     temperature: TextViewState = TextViewState().remove() as TextViewState,
-    errorMessage: TextViewState = TextViewState().hasText(text),
+    errorMessage: TextViewState = TextViewState().witText(text),
     loading: ViewState = ViewState().remove()
 ) : ForecastScreenState(container, weatherIcon, cityName,description, temperature, errorMessage, loading)

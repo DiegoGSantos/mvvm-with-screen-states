@@ -7,7 +7,7 @@ fun TextViewState.matchesTextViewState(textViewState: TextViewState): Boolean {
     return textViewState.text == this.text
 }
 
-fun TextViewState.hasText(text: String): TextViewState {
+fun TextViewState.witText(text: String): TextViewState {
     this.text = text
     return this
 }

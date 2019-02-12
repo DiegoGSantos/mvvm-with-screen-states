@@ -34,9 +34,9 @@ class ForecastViewModelUnitTest {
     private val successState = ForecastScreenState().apply {
         container.withBackground(R.color.clear_day_bg)
         weatherIcon.withBackground(R.drawable.ic_sunny)
-        cityName.hasText("Campinas")
-        description.hasText("Predominantemente ensolarado")
-        temperature.hasText("28° C")
+        cityName.witText("Campinas")
+        description.witText("Predominantemente ensolarado")
+        temperature.witText("28° C")
         errorMessage.remove()
         loading.remove()
     }
@@ -57,7 +57,7 @@ class ForecastViewModelUnitTest {
         cityName.remove()
         description.remove()
         temperature.remove()
-        errorMessage.hasText("Erro ao carregar cidade").show()
+        errorMessage.witText("Erro ao carregar cidade").show()
         loading.remove()
     }
 

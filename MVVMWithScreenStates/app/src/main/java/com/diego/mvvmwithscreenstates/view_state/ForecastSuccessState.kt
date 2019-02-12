@@ -10,9 +10,9 @@ class ForecastSuccessState(
     private val temperatureText: String,
     container: ViewState = ViewState().withBackground(containerBackground),
     weatherIcon: ViewState = ViewState().withBackground(weatherIconBackground),
-    cityName: TextViewState = TextViewState().hasText(cityNameText),
-    description: TextViewState = TextViewState().hasText(descriptionText),
-    temperature: TextViewState = TextViewState().hasText(temperatureText),
+    cityName: TextViewState = TextViewState().witText(cityNameText),
+    description: TextViewState = TextViewState().witText(descriptionText),
+    temperature: TextViewState = TextViewState().witText(temperatureText),
     errorMessage: TextViewState = TextViewState().remove() as TextViewState,
     loading: ViewState = ViewState().remove()
 ) : ForecastScreenState(container, weatherIcon, cityName, description, temperature, errorMessage, loading)
