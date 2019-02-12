@@ -9,7 +9,7 @@ import com.diego.mvvmwithscreenstates.view.ForecastScreenState
 import com.diego.mvvmwithscreenstates.view_state.*
 import retrofit2.Response
 
-class ForecastViewModel: ViewModel() {
+class ForecastViewModel : ViewModel() {
     val forecastLiveData: MutableLiveData<ForecastScreenState> = MutableLiveData()
 
     suspend fun getForecast(city: String) {
@@ -26,30 +26,12 @@ class ForecastViewModel: ViewModel() {
     }
 
     private fun onLoading() {
-        val forecastScreenState = ForecastScreenState().apply {
-            container.withBackground(getBackgroundColor(""))
-            weatherIcon.remove()
-            cityName.remove()
-            description.remove()
-            temperature.remove()
-            errorMessage.remove()
-            loading.show()
-        }
-
+        val forecastScreenState = ForecastLoadingState()
         updateState(forecastScreenState)
     }
 
     private fun onError(throwable: Throwable) {
-        val forecastScreenState = ForecastScreenState().apply {
-            container.withBackground(getBackgroundColor(""))
-            weatherIcon.remove()
-            cityName.remove()
-            description.remove()
-            temperature.remove()
-            errorMessage.hasText("Erro ao carregar cidade").show()
-            loading.remove()
-        }
-
+        val forecastScreenState = ForecastErrorState("Erro ao carregar cidade")
         updateState(forecastScreenState)
     }
 
@@ -57,16 +39,13 @@ class ForecastViewModel: ViewModel() {
         val forecast = response.body()
 
         forecast?.let {
-            val forecastScreenState = ForecastScreenState().apply {
-                container.withBackground(getBackgroundColor(forecast.periodOfTheDay))
-                weatherIcon.withBackground(getWeatherIcon(forecast.weather))
-                cityName.hasText(forecast.cityName)
-                description.hasText(forecast.forecastDesc)
-                temperature.hasText(forecast.temperature)
-                errorMessage.remove()
-                loading.remove()
-            }
-
+            val forecastScreenState = ForecastSuccessState(
+                getBackgroundColor(forecast.periodOfTheDay),
+                getWeatherIcon(forecast.weather),
+                forecast.cityName,
+                forecast.forecastDesc,
+                forecast.temperature
+            )
             updateState(forecastScreenState)
         }
     }
@@ -76,7 +55,7 @@ class ForecastViewModel: ViewModel() {
     }
 
     private fun getWeatherIcon(weather: String): Int {
-        return when(weather) {
+        return when (weather) {
             "sunny" -> R.drawable.ic_sunny
             "raining" -> R.drawable.ic_rain
             else -> R.drawable.ic_moon
@@ -84,7 +63,7 @@ class ForecastViewModel: ViewModel() {
     }
 
     private fun getBackgroundColor(periodOfTheDay: String): Int {
-        return when(periodOfTheDay) {
+        return when (periodOfTheDay) {
             "morning" -> R.color.clear_day_bg
             "night" -> R.color.clear_night_bg
             else -> R.color.white
