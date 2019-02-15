@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import com.diego.mvvmwithscreenstates.R
 import com.diego.mvvmwithscreenstates.extension.hideKeyboard
 import com.diego.mvvmwithscreenstates.view_model.ForecastViewModel
-import com.diego.mvvmwithscreenstates.view_state.setTextViewState
+import com.diego.screenstatesarch.view_state.setTextViewState
 import com.diego.mvvmwithscreenstates.view_state.setViewState
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers

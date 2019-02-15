@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.diego.mvvmwithscreenstates.view.ForecastScreenState
 import com.diego.mvvmwithscreenstates.view_state.*
+import com.diego.screenstatesarch.view_state.setTextViewState
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
