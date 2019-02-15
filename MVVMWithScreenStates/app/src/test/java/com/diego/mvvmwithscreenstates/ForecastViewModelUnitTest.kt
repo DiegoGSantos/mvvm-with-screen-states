@@ -17,11 +17,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.MockitoAnnotations
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class ForecastViewModelUnitTest {
     private lateinit var viewModel: ForecastViewModel
     private lateinit var server: MockWebServer
@@ -30,6 +25,8 @@ class ForecastViewModelUnitTest {
     @Rule
     @JvmField
     val rule = InstantTaskExecutorRule()
+
+    private lateinit var liveDataUnderTest: TestObserver<ForecastScreenState>
 
     private val successState = ForecastScreenState().apply {
         container.withBackground(R.color.clear_day_bg)
@@ -68,6 +65,7 @@ class ForecastViewModelUnitTest {
         configureMockServer()
 
         viewModel = ForecastViewModel()
+        liveDataUnderTest = viewModel.forecastLiveData.testObserver()
     }
 
     private fun configureMockServer() {
@@ -92,36 +90,36 @@ class ForecastViewModelUnitTest {
 
     @Test
     fun testLoadSunnyCitySuccess() {
-        viewModel.forecastLiveData.observeOnce {
-            itMatchesTheExpectedState(loadingState)
-        }
-
         runBlocking {
             viewModel.getForecast("campinas")
         }
 
-        viewModel.forecastLiveData.observeOnce {
-            itMatchesTheExpectedState(successState)
+        liveDataUnderTest.observedValues[0]?.apply {
+            itMatchesTheExpectedState(this, loadingState)
+        }
+
+        liveDataUnderTest.observedValues[1]?.apply {
+            itMatchesTheExpectedState(this, successState)
         }
     }
 
     @Test
     fun testLoadSunnyCityError() {
-        viewModel.forecastLiveData.observeOnce {
-            itMatchesTheExpectedState(loadingState)
-        }
-
         runBlocking {
             viewModel.getForecast("")
         }
 
-        viewModel.forecastLiveData.observeOnce {
-            itMatchesTheExpectedState(errorState)
+        liveDataUnderTest.observedValues[0]?.apply {
+            itMatchesTheExpectedState(this, loadingState)
+        }
+
+        liveDataUnderTest.observedValues[1]?.apply {
+            itMatchesTheExpectedState(this, errorState)
         }
     }
 
-    private fun itMatchesTheExpectedState(expectedState: ForecastScreenState) {
-        viewModel.forecastLiveData.value?.apply {
+    private fun itMatchesTheExpectedState(currentState: ForecastScreenState, expectedState: ForecastScreenState) {
+        currentState.apply {
             assertTrue(container.matchesViewState(expectedState.container))
             assertTrue(weatherIcon.matchesViewState(expectedState.weatherIcon))
             assertTrue(cityName.matchesTextViewState(expectedState.cityName))
