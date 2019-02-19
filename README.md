@@ -14,4 +14,4 @@ For this sample I have used:
 -<a href="https://square.github.io/retrofit/">Retrofit</a> for http requests and <a href="https://github.com/square/okhttp/tree/master/mockwebserver">Mock Web Server</a> to set up expected test scenarios on requests</br></br>
 -<a href="https://site.mockito.org/">Mockito</a> for mocks</br></br>
 
-Remember that how you implement it does not matter, the point here is to make some experimentantions about how effective this aproach can be to solve commom problems when talking about Android projects archtectures. That is the way I found 
+Remember that how you implement it does not matter, the point here is to make some experimentantions about how effective this aproach can be to solve commom problems when talking about Android projects archtectures. That is the way I found it fits best my initial ideas.
