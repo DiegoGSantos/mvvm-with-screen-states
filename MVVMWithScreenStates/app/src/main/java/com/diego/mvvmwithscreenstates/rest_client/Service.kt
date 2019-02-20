@@ -2,7 +2,6 @@ package com.diego.mvvmwithscreenstates.rest_client
 
 import com.diego.mvvmwithscreenstates.model.Forecast
 import com.diego.mvvmwithscreenstates.model.Task
-import com.diego.screenstatesarch.restClient.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call

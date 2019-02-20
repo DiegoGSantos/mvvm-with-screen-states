@@ -5,17 +5,23 @@ import androidx.lifecycle.ViewModel
 import com.diego.mvvmwithscreenstates.model.Task
 import com.diego.mvvmwithscreenstates.rest_client.Service
 import com.diego.mvvmwithscreenstates.rest_client.awaitResponse
+import com.diego.mvvmwithscreenstates.view.TaskListScreenState
+import com.diego.mvvmwithscreenstates.view.TaskViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class TasksViewModel : ViewModel() {
-    val tasksLiveData: MutableLiveData<List<Task>> = MutableLiveData()
+    val tasksLiveData: MutableLiveData<TaskListScreenState> = MutableLiveData()
 
     fun loadTasks() {
         GlobalScope.launch(Dispatchers.Main) {
-            Service.create().listTasks().awaitResponse(::onRequestSuccess, ::onError)
+//            Service.create().listTasks().awaitResponse(::onRequestSuccess, ::onError)
+            val tasks = ArrayList<TaskViewState>()
+            tasks.add(TaskViewState("Do the dishes"))
+            tasks.add(TaskViewState( "Wash the car"))
+            tasksLiveData.value = TaskListScreenState(tasks)
         }
     }
 
@@ -24,7 +30,7 @@ class TasksViewModel : ViewModel() {
     }
 
     private fun onRequestSuccess(response: Response<List<Task>>) {
-        tasksLiveData.value = response.body()
+//        tasksLiveData.value = response.body()
     }
 }
 
